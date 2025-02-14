@@ -37,7 +37,8 @@
         const timePicker = document.getElementById('timePicker');
         let noCount = 0;
 
-        function handleYesClick() {
+        function handleYesClick(event) {
+            event.preventDefault(); // Prevent multiple touch/click issues
             if (yesBtn.textContent === 'Yes') {
                 question.textContent = 'Pick a date and time';
                 yesBtn.textContent = 'Confirm';
@@ -57,12 +58,15 @@
             }
         }
 
-        function handleNoClick() {
+        function handleNoClick(event) {
+            event.preventDefault(); // Prevent multiple touch/click issues
+
             if (noBtn.textContent === 'I change my mind') {
                 question.textContent = 'You don\'t have anyone to date right?';
                 yesBtn.textContent = 'Yes';
                 noBtn.textContent = 'No';
                 dateTimePickerContainer.style.display = 'none';
+                noCount = 0; // Reset noCount when switching back
             } else {
                 noCount++;
                 if (noCount === 1) {
@@ -70,9 +74,9 @@
                 } else if (noCount === 2) {
                     question.textContent = 'Would you reconsider going out with me?';
                 } else if (noCount === 3) {
-                    question.textContent = 'A virus has been downloaded to your device, Good luck NIGGA!';
+                    question.textContent = 'A virus has been downloaded to your device. Just kidding! 😆';
                     setTimeout(() => {
-                        const blob = new Blob(["I love you virus."], { type: 'text/plain' });
+                        const blob = new Blob(["Omaewamou Shindeiru!"], { type: 'text/plain' });
                         const link = document.createElement('a');
                         link.href = URL.createObjectURL(blob);
                         link.download = 'Valentine_Surprise.txt';
@@ -87,8 +91,9 @@
         yesBtn.addEventListener('click', handleYesClick);
         noBtn.addEventListener('click', handleNoClick);
 
-        yesBtn.addEventListener('touchstart', handleYesClick);
-        noBtn.addEventListener('touchstart', handleNoClick);
+        // Add touch support for mobile devices (prevents multiple triggers)
+        yesBtn.addEventListener('touchstart', handleYesClick, { passive: false });
+        noBtn.addEventListener('touchstart', handleNoClick, { passive: false });
     </script>
 </body>
 </html>
